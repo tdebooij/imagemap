@@ -1,89 +1,56 @@
 <template>
-  <div
-    class="image-map"
-    @click="containerClick"
-    @mousemove="containerMouseMove"
-    @mouseup="containerMouseUp"
-  >
+  <div class="image-map">
     <img
       src="https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1934&q=80"
       alt="Image to map"
     />
-    <svg class="imagemap-svg-overlay">
-      <!-- <map-element
-        v-for="(map, mapIndex) in maps"
-        :key="mapIndex"
-        :data="map"
-        :isActive="selectedMap === map"
-        @handleSelected="selectResizeHandle"
-        @mapSelected="selectMap(map)"
-      ></map-element> -->
+    <svg class="imagemap-svg-overlay" @click.self="addElement">
+      <map-element
+        v-for="(map, index) in maps"
+        :key="index"
+        :map.sync="map"
+        @selected="setSelected(map)"
+      ></map-element>
     </svg>
   </div>
 </template>
 
 <script>
-//import MapElement from "./MapElement.vue";
+/* eslint-disable vue/valid-v-model */
+import MapElement from "./MapElement.vue";
 import MapElementClass from "./MapElement.js";
 
 export default {
   name: "ImageMap",
   data() {
     return {
-      maps: [],
-      selectedMap: undefined,
-      selectedHandle: undefined
+      maps: []
     };
   },
   methods: {
-    containerClick(evt) {
-      const mousePostion = getRelativeMousePosition(evt);
+    addElement(event) {
+      console.log(this.$refs);
+      // Deselect the currently selected maps
+      this.deselectAllMaps();
+
       // Create a new element, add it to our maps array and save the new length
-      const newMap = {
-        element: "rect",
-        props: { x: mousePostion.x, y: mousePostion.y, width: 100, height: 100 }
-      };
-      this.maps.push(newMap);
-
-      // Set the active map to the newly created map
-      this.selectedMap = newMap;
-
-      // New test code below
-      const mapClass = new MapElementClass(
-        "rect",
-        mousePostion.x,
-        mousePostion.y
-      );
-      console.log("----");
-      console.log(mapClass.data);
+      const map = new MapElementClass("rect", getRelativeMousePosition(event));
+      this.maps.push(map);
     },
-    containerMouseUp() {
-      console.log("mouseUp");
+    setSelected(map) {
+      this.deselectAllMaps();
+      // Set the given map to active
+      map.isActive = true;
     },
-    containerMouseMove(event) {
-      if (event.buttons === 1) {
-        console.log("movin");
-      }
-    },
-    handleMove(map, evt) {
-      if (evt.buttons === 1) {
-        map.props.x += evt.movementX;
-        map.props.y += evt.movementY;
-      }
-    },
-    selectMap(map) {
-      this.selectedMap = map;
-    },
-    selectResizeHandle(handle) {
-      console.log(handle);
-      // console.log(map);
-      // console.log(event);
-      //this.selectedHandle = handle;
+    deselectAllMaps() {
+      // Set all maps to inactive
+      this.maps.forEach(map => (map.isActive = false));
     }
   },
-  components: {}
+  components: { MapElement }
 };
 
+// Get the mouse position relative to the image element
 const getRelativeMousePosition = function(e) {
   const rect = e.target.getBoundingClientRect();
   return {

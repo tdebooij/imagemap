@@ -1,52 +1,45 @@
 <template>
   <g>
     <component
-      :is="data.element"
-      v-bind.camel="data.props"
+      :is="map.element"
+      v-bind="map"
+      :class="{ 'is-active': map.isActive }"
       class="map-element"
-      :class="{ 'is-active': isActive }"
-      @click.self.stop.prevent="emitMapSelected"
+      @mousedown.self.stop="$emit('selected')"
+      @mousemove.self.stop="updatePosition"
     />
-    <resize-handle
-      v-show="isActive"
-      v-for="handle in dragHandles"
-      :key="`x: ${handle.cx}, y: ${handle.cy}`"
-      v-bind="handle"
-      @selected="emitHandleSelected(handle)"
-    ></resize-handle>
+    <drag-handle
+      v-for="handle in map.dragHandles"
+      :key="handle.direction"
+      v-bind="handle.data"
+      @resize:map="updateSize"
+    />
   </g>
 </template>
 
 <script>
-import ResizeHandle from "./ResizeHandle.vue";
-import dragHandles from "./ComputedDragHandles";
+import DragHandle from "./DragHandle.vue";
 
 export default {
   name: "MapElement",
   props: {
-    data: { type: Object, required: true },
-    isActive: { type: Boolean, default: false }
+    map: { type: Object, required: true }
   },
   methods: {
-    emitMapSelected(event) {
-      event.preventDefault;
-      this.$emit("mapSelected");
-    },
-    emitHandleSelected(handle, event) {
-      event.preventDefault;
-      this.$emit("handleSelected", handle);
-    },
-
-    handleResize(data) {
-      for (const prop in data) {
-        this.data.props[prop] += data[prop];
+    updateSize(adjustments) {
+      for (const prop in adjustments) {
+        this.map[prop] += adjustments[prop];
       }
+      this.$emit("update:map", this.map);
+    },
+    updatePosition(event) {
+      if (event.buttons !== 1) return;
+      this.map.x += event.movementX;
+      this.map.y += event.movementY;
+      this.$emit("update:map", this.map);
     }
   },
-  computed: {
-    dragHandles
-  },
-  components: { ResizeHandle }
+  components: { DragHandle }
 };
 </script>
 

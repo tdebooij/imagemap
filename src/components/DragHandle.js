@@ -1,8 +1,27 @@
 export default class DragHandle {
-  constructor(direction, x, y, isActive) {
+  constructor(direction, element) {
     this.direction = direction;
-    this.x = x;
-    this.y = y;
-    this.isActive = isActive;
+    switch (direction) {
+      case "nw":
+        this.cx = element.x;
+        this.cy = element.y;
+        break;
+      case "ne":
+        this.cx = element.x + element.width;
+        this.cy = element.y;
+        break;
+      case "se":
+        this.cx = element.x + element.width;
+        this.cy = element.y + element.height;
+        break;
+      case "sw":
+        this.cx = element.x;
+        this.cy = element.y + element.height;
+        break;
+    }
+  }
+
+  get data() {
+    return Object.assign(this);
   }
 }
