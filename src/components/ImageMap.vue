@@ -55,7 +55,7 @@ export default {
         mousePostion.y
       );
       console.log("----");
-      console.log(mapClass);
+      console.log(mapClass.data);
     },
     containerMouseUp() {
       console.log("mouseUp");
