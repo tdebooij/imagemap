@@ -1,15 +1,21 @@
 <template>
-  <circle
-    :cx="cx"
-    :cy="cy"
-    r="5"
-    class="imagemap-resize-handle"
-    data-area-index="0"
-    data-coord-index="0"
-    @mousemove.self.stop="handleResize"
-    @click.self.stop
-  ></circle>
-  <!-- @mousemove.stop.prevent="handleResize($event)" -->
+  <g class="imagemap-draghandle" @mousemove.stop="handleResize" @click.stop>
+    <rect
+      :x="cx - 50"
+      :y="cy - 50"
+      width="100"
+      height="100"
+      class="imagemap-helper-rect"
+      v-if="active"
+    ></rect>
+    <circle
+      :cx="cx"
+      :cy="cy"
+      r="5"
+      class="imagemap-resize-handle"
+      @mousedown.self.stop="setActive"
+    ></circle>
+  </g>
 </template>
 
 <script>
@@ -27,42 +33,66 @@ export default {
     cy: {
       type: Number,
       required: true
+    },
+    mapIsActive: {
+      type: Boolean,
+      default: false
     }
   },
+  data() {
+    return {
+      active: false
+    };
+  },
   methods: {
+    setActive() {
+      // Set the active state to true
+      this.active = true;
+      // Set an event listener (on the entire body) to check for mouseUp event, if so, disable the active state on the draghandle
+      window.addEventListener("mouseup", test);
+      const _this = this;
+      function test() {
+        _this.active = false;
+        window.removeEventListener("mouseup", test);
+      }
+    },
     handleResize(event) {
       if (event.buttons !== 1) return;
 
+      let adjustments = {};
+
       switch (this.direction) {
         case "nw":
-          this.$emit("resize:map", {
+          adjustments = {
             x: event.movementX,
             y: event.movementY,
             width: -1 * event.movementX,
             height: -1 * event.movementY
-          });
+          };
           break;
         case "ne":
-          this.$emit("resize:map", {
+          adjustments = {
             y: event.movementY,
             width: event.movementX,
             height: -1 * event.movementY
-          });
+          };
           break;
         case "se":
-          this.$emit("resize:map", {
+          adjustments = {
             width: event.movementX,
             height: event.movementY
-          });
+          };
           break;
         case "sw":
-          this.$emit("resize:map", {
+          adjustments = {
             x: event.movementX,
             width: -1 * event.movementX,
             height: event.movementY
-          });
+          };
           break;
       }
+
+      this.$emit("resize:map", adjustments);
     }
   }
 };
@@ -75,5 +105,8 @@ export default {
   stroke-width: 1;
   opacity: 0.6;
   cursor: grab;
+}
+.imagemap-helper-rect {
+  opacity: 0.2;
 }
 </style>

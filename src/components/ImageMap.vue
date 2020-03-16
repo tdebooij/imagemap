@@ -4,12 +4,12 @@
       src="https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1934&q=80"
       alt="Image to map"
     />
-    <svg class="imagemap-svg-overlay" @click.self="addElement">
+    <svg class="imagemap-svg-overlay" @dblclick.self.stop="addElement">
       <map-element
         v-for="(map, index) in maps"
         :key="index"
         :map.sync="map"
-        @selected="setSelected(map)"
+        @selected="setSelected(map, index)"
       ></map-element>
     </svg>
   </div>
@@ -29,7 +29,6 @@ export default {
   },
   methods: {
     addElement(event) {
-      console.log(this.$refs);
       // Deselect the currently selected maps
       this.deselectAllMaps();
 
@@ -37,10 +36,12 @@ export default {
       const map = new MapElementClass("rect", getRelativeMousePosition(event));
       this.maps.push(map);
     },
-    setSelected(map) {
+    setSelected(map, index) {
       this.deselectAllMaps();
       // Set the given map to active
       map.isActive = true;
+      // Move the active map to the end of the array, so it is painted last and therefore on top
+      this.maps.push(this.maps.splice(index, 1)[0]);
     },
     deselectAllMaps() {
       // Set all maps to inactive

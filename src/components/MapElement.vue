@@ -6,12 +6,14 @@
       :class="{ 'is-active': map.isActive }"
       class="map-element"
       @mousedown.self.stop="$emit('selected')"
+      @click.self.prevent="$emit('selected')"
       @mousemove.self.stop="updatePosition"
     />
     <drag-handle
       v-for="handle in map.dragHandles"
       :key="handle.direction"
       v-bind="handle.data"
+      :mapIsActive="map.isActive"
       @resize:map="updateSize"
     />
   </g>
@@ -27,9 +29,19 @@ export default {
   },
   methods: {
     updateSize(adjustments) {
+      // Loop over each adjustment that needs to be made and apply it
       for (const prop in adjustments) {
         this.map[prop] += adjustments[prop];
       }
+
+      // Check for negative width and/or height values
+      if (this.map.width < 0) {
+        this.map.width = 0;
+      }
+      if (this.map.height < 0) {
+        this.map.height = 0;
+      }
+
       this.$emit("update:map", this.map);
     },
     updatePosition(event) {
