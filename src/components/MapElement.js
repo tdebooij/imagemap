@@ -4,12 +4,17 @@ export default class MapElement {
   constructor(element, position) {
     this.element = element;
     this.x = position.x;
+    this.cx = this.x;
     this.y = position.y;
+    this.cy = this.y;
     // Set a newly created map to active by default
     this.isActive = true;
     // TODO: Pull default width and height from settings
     this.width = 40;
     this.height = 40;
+    this.r = this.width;
+    this.rx = this.width;
+    this.ry = this.height;
   }
 
   // Getter for the element data, returns all attributes that can be bound to the DOM inside an <svg> element
@@ -18,9 +23,14 @@ export default class MapElement {
     return {
       element: this.element,
       x: this.x,
+      cx: this.x,
       y: this.y,
+      cy: this.y,
       width: this.width,
-      height: this.height
+      r: this.width,
+      rx: this.width,
+      height: this.height,
+      ry: this.height
     };
   }
 
@@ -30,6 +40,13 @@ export default class MapElement {
     let handles = [];
     if (this.element === "rect") {
       const directions = ["ne", "nw", "sw", "se"];
+
+      for (const direction of directions) {
+        handles.push(new DragHandle(direction, this.data));
+      }
+    }
+    if (this.element === "circle") {
+      const directions = ["n", "w", "s", "e"];
 
       for (const direction of directions) {
         handles.push(new DragHandle(direction, this.data));
