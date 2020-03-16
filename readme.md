@@ -11,9 +11,9 @@ Create an image map with vue :)
 - [x] Move ResizeHandle logic to class
 - [x] Event: Move
 - [x] Event: Resize
+- [x] Fix: Stop creating new after moving the mouse of the draghandle
+- [x] Fix: Keep resizing when mouse down started on draghandle and is not released, even if the mouse moves off of the draghandle
 - [ ] Implement scalability
 - [ ] Shape: Circle
 - [ ] Shape: Polygon
 - [ ] Event: Create
-- [ ] Fix: Stop creating new after moving the mouse of the draghandle
-- [ ] Fix: Keep resizing when mouse down started on draghandle and is not released, even if the mouse moves off of the draghandle
