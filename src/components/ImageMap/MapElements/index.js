@@ -1,3 +1,7 @@
-import Rectangle from "./rectangle";
+// Shape classes
+import Rectangle from "./rectangle.js";
 
-export { Rectangle };
+// Renderers
+import ElementComponent from "./Element.vue";
+
+export { Rectangle, ElementComponent };

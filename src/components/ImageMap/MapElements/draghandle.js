@@ -1,10 +1,11 @@
 export default class DragHandle {
   constructor(x, y, movehandler) {
-    this.cx = x;
-    this.cy = y;
+    this.attributes = {
+      cx: x,
+      cy: y,
+      r: 5 // TODO: Pull from settings
+    };
     this.mousemovehandler = movehandler;
-    // TODO: Pull from settings
-    this.r = 5;
   }
 
   get data() {

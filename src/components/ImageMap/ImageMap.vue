@@ -8,20 +8,19 @@
       class="imagemap-svg-overlay"
       @contextmenu.prevent="$refs.elementmenu.open"
     >
-      <map-element
+      <element-component
         v-for="(map, index) in maps"
         :key="index"
         :map.sync="map"
         @selected="setSelected(map, index)"
-      ></map-element>
+      ></element-component>
     </svg>
     <add-element-context-menu ref="elementmenu" @addElement="addElement" />
   </div>
 </template>
 
 <script>
-import MapElement from "./MapElement.vue";
-import MapElementClass from "./MapElement.js";
+import { Rectangle, ElementComponent } from "./MapElements";
 import AddElementContextMenu from "./ElementContextMenu.vue";
 
 export default {
@@ -32,13 +31,24 @@ export default {
       mouseClickEvent: undefined
     };
   },
+  created() {
+    document.addEventListener("keyup", this.deleteKeyListener);
+  },
   methods: {
     addElement(shape, event) {
       // Deselect the currently selected maps
       this.deselectAllMaps();
 
       // Create a new element, add it to our maps array and save the new length
-      const map = new MapElementClass(shape, getRelativeMousePosition(event));
+      let map;
+      switch (shape) {
+        case "rect":
+          map = new Rectangle(event);
+          break;
+        default:
+          throw new Error(`Non-existing shape: "${shape}"`);
+      }
+
       this.maps.push(map);
     },
     setSelected(map, index) {
@@ -51,19 +61,16 @@ export default {
     deselectAllMaps() {
       // Set all maps to inactive
       this.maps.forEach(map => (map.isActive = false));
+    },
+    deleteKeyListener(event) {
+      if (event.key !== "Delete") return;
+      this.maps.splice(
+        this.maps.findIndex(e => e.isActive),
+        1
+      );
     }
   },
-  components: { MapElement, AddElementContextMenu }
-};
-
-// Get the mouse position relative to the image element
-const getRelativeMousePosition = function(e) {
-  console.log(e);
-  const rect = e.target.getBoundingClientRect();
-  return {
-    x: e.clientX - rect.left,
-    y: e.clientY - rect.top
-  };
+  components: { ElementComponent, AddElementContextMenu }
 };
 </script>
 
