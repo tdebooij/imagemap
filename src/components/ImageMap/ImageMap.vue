@@ -6,7 +6,7 @@
     />
     <svg
       class="imagemap-svg-overlay"
-      @contextmenu.prevent="$refs.elementmenu.open"
+      @contextmenu.prevent="$refs.contextmenu.open"
     >
       <element-component
         v-for="(map, index) in maps"
@@ -15,13 +15,13 @@
         @selected="setSelected(map, index)"
       ></element-component>
     </svg>
-    <add-element-context-menu ref="elementmenu" @addElement="addElement" />
+    <context-menu ref="contextmenu" @addElement="addElement" />
   </div>
 </template>
 
 <script>
 import { Rectangle, ElementComponent } from "./MapElements";
-import AddElementContextMenu from "./ElementContextMenu.vue";
+import ContextMenu from "./ContextMenu.vue";
 
 export default {
   name: "ImageMap",
@@ -70,7 +70,7 @@ export default {
       );
     }
   },
-  components: { ElementComponent, AddElementContextMenu }
+  components: { ElementComponent, ContextMenu }
 };
 </script>
 
