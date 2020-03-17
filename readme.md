@@ -2,6 +2,17 @@
 
 Create an image map with vue :)
 
+# Dependencies
+
+Besides all the normal vue 2 stuff ofcourse, copy the component folder into the app.
+And then:
+
+```
+npi i vue-context
+```
+
+For the "add element" context menu
+
 # TODO
 
 - [x] Initial set up

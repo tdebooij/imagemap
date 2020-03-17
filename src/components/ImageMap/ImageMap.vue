@@ -4,7 +4,10 @@
       src="https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1934&q=80"
       alt="Image to map"
     />
-    <svg class="imagemap-svg-overlay" @dblclick.self.stop="addElement">
+    <svg
+      class="imagemap-svg-overlay"
+      @contextmenu.prevent="$refs.elementmenu.open"
+    >
       <map-element
         v-for="(map, index) in maps"
         :key="index"
@@ -12,28 +15,30 @@
         @selected="setSelected(map, index)"
       ></map-element>
     </svg>
+    <add-element-context-menu ref="elementmenu" @addElement="addElement" />
   </div>
 </template>
 
 <script>
-/* eslint-disable vue/valid-v-model */
 import MapElement from "./MapElement.vue";
 import MapElementClass from "./MapElement.js";
+import AddElementContextMenu from "./ElementContextMenu.vue";
 
 export default {
   name: "ImageMap",
   data() {
     return {
-      maps: []
+      maps: [],
+      mouseClickEvent: undefined
     };
   },
   methods: {
-    addElement(event) {
+    addElement(shape, event) {
       // Deselect the currently selected maps
       this.deselectAllMaps();
 
       // Create a new element, add it to our maps array and save the new length
-      const map = new MapElementClass("rect", getRelativeMousePosition(event));
+      const map = new MapElementClass(shape, getRelativeMousePosition(event));
       this.maps.push(map);
     },
     setSelected(map, index) {
@@ -48,11 +53,12 @@ export default {
       this.maps.forEach(map => (map.isActive = false));
     }
   },
-  components: { MapElement }
+  components: { MapElement, AddElementContextMenu }
 };
 
 // Get the mouse position relative to the image element
 const getRelativeMousePosition = function(e) {
+  console.log(e);
   const rect = e.target.getBoundingClientRect();
   return {
     x: e.clientX - rect.left,

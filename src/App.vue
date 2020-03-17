@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ImageMap from "./components/ImageMap";
+import ImageMap from "./components/ImageMap/ImageMap";
 
 export default {
   name: "App",
@@ -22,7 +22,6 @@ export default {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
   user-select: none; /* to prevent selecting the entire thing on doubleclick */
