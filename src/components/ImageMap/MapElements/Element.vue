@@ -47,6 +47,8 @@ export default {
       if (event.buttons !== 1) return;
       this.map.attributes.x += event.movementX;
       this.map.attributes.y += event.movementY;
+      this.map.attributes.cx += event.movementX;
+      this.map.attributes.cy += event.movementY;
       this.$emit("update:map", this.map);
     }
   },

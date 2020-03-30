@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { Rectangle, ElementComponent } from "./MapElements";
+import { Rectangle, Circle, Ellipse, ElementComponent } from "./MapElements";
 import ContextMenu from "./ContextMenu.vue";
 
 export default {
@@ -44,6 +44,12 @@ export default {
       switch (shape) {
         case "rect":
           map = new Rectangle(event);
+          break;
+        case "circle":
+          map = new Circle(event);
+          break;
+        case "ellipse":
+          map = new Ellipse(event);
           break;
         default:
           throw new Error(`Non-existing shape: "${shape}"`);
