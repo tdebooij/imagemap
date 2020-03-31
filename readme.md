@@ -15,6 +15,10 @@ For the "add element" context menu
 
 # TODO
 
+## Critical
+
+These have to be completed before anything else
+
 - [x] Initial set up
 - [x] Event listeners
 - [x] Shape: Rectangle
@@ -27,9 +31,20 @@ For the "add element" context menu
 - [x] Shape: Circle
 - [x] Shape: Ellipse
 - [x] Event: Create
+- [x] Fix: scaling circle and ellipse
+- [x] Implement in and exporting (via v-model?)
 - [ ] Implement scalability
-- [ ] Fix: scaling circle and ellipse
-- [ ] Fix: Negative radius and overlapping draghandles
-- [ ] Implement: Click content emit
+- [ ] Allow metadata per map (like content)
+
+## Major
+
+These can only be implemented after the critical bits have been finished
+
 - [ ] Implement: View only part
+- [ ] Implement: Draggable imagemap
+
+## Minor
+
+- [ ] Fix: Negative radius and overlapping draghandles
 - [ ] Shape: Polygon
+- [ ] View-mode: allow settings like show maps, show mouse changing to pointer etc.

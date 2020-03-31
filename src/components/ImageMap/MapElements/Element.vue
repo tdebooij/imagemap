@@ -45,10 +45,10 @@ export default {
     },
     updatePosition(event) {
       if (event.buttons !== 1) return;
-      this.map.attributes.x += event.movementX;
-      this.map.attributes.y += event.movementY;
-      this.map.attributes.cx += event.movementX;
-      this.map.attributes.cy += event.movementY;
+      if (this.map.attributes.x) this.map.attributes.x += event.movementX;
+      if (this.map.attributes.y) this.map.attributes.y += event.movementY;
+      if (this.map.attributes.cx) this.map.attributes.cx += event.movementX;
+      if (this.map.attributes.cy) this.map.attributes.cy += event.movementY;
       this.$emit("update:map", this.map);
     }
   },

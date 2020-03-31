@@ -1,5 +1,5 @@
 <template>
-  <div class="image-map">
+  <div class="image-map" ref="imagemap" @resize="emitUpdate">
     <img
       src="https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1934&q=80"
       alt="Image to map"
@@ -25,12 +25,24 @@ import ContextMenu from "./ContextMenu.vue";
 
 export default {
   name: "ImageMap",
+  props: {
+    value: { type: Object }
+  },
   data() {
     return {
       maps: []
     };
   },
   created() {
+    // If there is data in the value prop, set it to the maps prop
+    if (this.value) {
+      // First, check the sizes of the map vs the imagemap size
+      // TODO: Do that what I typed above.
+
+      // Assign it
+      this.maps = this.value.maps;
+    }
+
     // Add event listener for the delete key
     document.addEventListener("keyup", this.deleteKeyListener);
   },
@@ -75,10 +87,25 @@ export default {
         1
       );
     },
-    getRelativeMap() {
-      for (let map in this.maps) {
-        console.log(map);
-      }
+    emitUpdate() {
+      const domElement = this.$refs.imagemap;
+      const mapData = {
+        size: {
+          width: domElement.clientWidth,
+          height: domElement.clientHeight
+        },
+        maps: this.maps
+      };
+      this.$emit("input", mapData);
+    }
+  },
+  watch: {
+    // Set up a watcher to emit values to the parent
+    maps: {
+      handler: function() {
+        this.emitUpdate();
+      },
+      deep: true
     }
   },
   components: { ElementComponent, ContextMenu }

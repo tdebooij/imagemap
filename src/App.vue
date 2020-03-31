@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <div class="col-50">
-      <image-map />
+      <image-map v-model="maps" />
     </div>
     <div class="col-50">
-      HERE GOES DATA JO!
+      {{ maps }}
     </div>
   </div>
 </template>
@@ -14,6 +14,11 @@ import ImageMap from "./components/ImageMap/ImageMap";
 
 export default {
   name: "App",
+  data() {
+    return {
+      maps: undefined
+    };
+  },
   components: {
     ImageMap
   }
@@ -29,7 +34,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   margin-top: 60px;
-  user-select: none; /* to prevent selecting the entire thing on doubleclick */
 
   display: flex;
 }
