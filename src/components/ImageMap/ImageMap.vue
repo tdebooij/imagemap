@@ -27,11 +27,11 @@ export default {
   name: "ImageMap",
   data() {
     return {
-      maps: [],
-      mouseClickEvent: undefined
+      maps: []
     };
   },
   created() {
+    // Add event listener for the delete key
     document.addEventListener("keyup", this.deleteKeyListener);
   },
   methods: {
@@ -74,6 +74,11 @@ export default {
         this.maps.findIndex(e => e.isActive),
         1
       );
+    },
+    getRelativeMap() {
+      for (let map in this.maps) {
+        console.log(map);
+      }
     }
   },
   components: { ElementComponent, ContextMenu }

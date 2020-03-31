@@ -1,6 +1,11 @@
 <template>
   <div id="app">
-    <image-map />
+    <div class="col-50">
+      <image-map />
+    </div>
+    <div class="col-50">
+      HERE GOES DATA JO!
+    </div>
   </div>
 </template>
 
@@ -25,5 +30,12 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
   user-select: none; /* to prevent selecting the entire thing on doubleclick */
+
+  display: flex;
+}
+
+.col-50 {
+  width: 50%;
+  padding: 0 1rem;
 }
 </style>

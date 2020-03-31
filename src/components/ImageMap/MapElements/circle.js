@@ -22,9 +22,10 @@ export default class Circle extends Element {
         this.attributes.cx - this.attributes.r,
         this.attributes.cy - this.attributes.r,
         event => {
-          const movement = Math.max(event.movementX, event.movementY);
           return {
-            r: -1 * movement
+            r: -1 * (event.movementX / 2),
+            cx: event.movementX / 2,
+            cy: event.movementX / 2
           };
         }
       ),
@@ -33,9 +34,10 @@ export default class Circle extends Element {
         this.attributes.cx + this.attributes.r,
         this.attributes.cy - this.attributes.r,
         event => {
-          const movement = Math.max(event.movementX, event.movementY);
           return {
-            r: movement
+            r: event.movementX / 2,
+            cx: event.movementX / 2,
+            cy: -1 * (event.movementX / 2)
           };
         }
       ),
@@ -44,9 +46,10 @@ export default class Circle extends Element {
         this.attributes.cx + this.attributes.r,
         this.attributes.cy + this.attributes.r,
         event => {
-          const movement = Math.max(event.movementX, event.movementY);
           return {
-            r: movement
+            r: event.movementX / 2,
+            cx: event.movementX / 2,
+            cy: event.movementX / 2
           };
         }
       ),
@@ -55,9 +58,10 @@ export default class Circle extends Element {
         this.attributes.cx - this.attributes.r,
         this.attributes.cy + this.attributes.r,
         event => {
-          const movement = Math.max(event.movementX, event.movementY);
           return {
-            r: movement
+            r: -1 * (event.movementX / 2),
+            cx: event.movementX / 2,
+            cy: -1 * (event.movementX / 2)
           };
         }
       )

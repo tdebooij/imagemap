@@ -24,7 +24,12 @@ For the "add element" context menu
 - [x] Event: Resize
 - [x] Fix: Stop creating new after moving the mouse of the draghandle
 - [x] Fix: Keep resizing when mouse down started on draghandle and is not released, even if the mouse moves off of the draghandle
+- [x] Shape: Circle
+- [x] Shape: Ellipse
+- [x] Event: Create
 - [ ] Implement scalability
-- [ ] Shape: Circle
+- [ ] Fix: scaling circle and ellipse
+- [ ] Fix: Negative radius and overlapping draghandles
+- [ ] Implement: Click content emit
+- [ ] Implement: View only part
 - [ ] Shape: Polygon
-- [ ] Event: Create

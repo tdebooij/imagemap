@@ -24,8 +24,10 @@ export default class Ellipse extends Element {
         this.attributes.cy - this.attributes.ry,
         event => {
           return {
-            rx: -1 * event.movementX,
-            ry: -1 * event.movementY
+            rx: -1 * (event.movementX / 2),
+            ry: -1 * (event.movementY / 2),
+            cx: event.movementX / 2,
+            cy: event.movementY / 2
           };
         }
       ),
@@ -35,8 +37,10 @@ export default class Ellipse extends Element {
         this.attributes.cy - this.attributes.ry,
         event => {
           return {
-            rx: event.movementX,
-            ry: -1 * event.movementY
+            rx: event.movementX / 2,
+            ry: -1 * (event.movementY / 2),
+            cx: event.movementX / 2,
+            cy: event.movementY / 2
           };
         }
       ),
@@ -46,8 +50,10 @@ export default class Ellipse extends Element {
         this.attributes.cy + this.attributes.ry,
         event => {
           return {
-            rx: event.movementX,
-            ry: event.movementY
+            rx: event.movementX / 2,
+            ry: event.movementY / 2,
+            cx: event.movementX / 2,
+            cy: event.movementY / 2
           };
         }
       ),
@@ -57,8 +63,10 @@ export default class Ellipse extends Element {
         this.attributes.cy + this.attributes.ry,
         event => {
           return {
-            rx: -1 * event.movementX,
-            ry: event.movementY
+            rx: -1 * (event.movementX / 2),
+            ry: event.movementY / 2,
+            cx: event.movementX / 2,
+            cy: event.movementY / 2
           };
         }
       )

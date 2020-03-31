@@ -6,12 +6,6 @@ export default class element {
     this.isActive = true;
   }
 
-  // Get an object of all element attributes needed to display the svg element (e.g. width, height, radius x, y etc.)
-  // get attributes() {
-  //   console.log(this.attributes);
-  //   return Object.assign(this.attributes);
-  // }
-
   // Get the draghandle class elements for this element
   get dragHandles() {
     throw new Error("Function should be overriden in child");
