@@ -36,11 +36,20 @@ export default {
       }
 
       // Check for negative width and/or height values
-      if (this.map.attributes.width < 0) {
-        this.map.attributes.width = 0;
+      if (this.map.attributes.width < 2) {
+        this.map.attributes.width = 2;
       }
-      if (this.map.attributes.height < 0) {
-        this.map.attributes.height = 0;
+      if (this.map.attributes.height < 2) {
+        this.map.attributes.height = 2;
+      }
+      if (this.map.attributes.r < 1) {
+        this.map.attributes.r = 1;
+      }
+      if (this.map.attributes.rx < 1) {
+        this.map.attributes.rx = 1;
+      }
+      if (this.map.attributes.ry < 1) {
+        this.map.attributes.ry = 1;
       }
 
       this.$emit("update:map", this.map);
