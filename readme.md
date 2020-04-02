@@ -8,7 +8,7 @@ Besides all the normal vue 2 stuff ofcourse, copy the component folder into the 
 And then:
 
 ```
-npi i vue-context
+npm i vue-context
 ```
 
 For the "add element" context menu
@@ -31,20 +31,34 @@ These have to be completed before anything else
 - [x] Shape: Circle
 - [x] Shape: Ellipse
 - [x] Event: Create
-- [x] Fix: scaling circle and ellipse
 - [x] Implement in and exporting (via v-model?)
 - [x] Implement scalability
-- [ ] Allow metadata per map (like content)
-
-## Major
-
-These can only be implemented after the critical bits have been finished
-
-- [ ] Implement: View only part
-- [ ] Implement: Draggable imagemap
 
 ## Minor
 
-- [ ] Fix: Negative radius and overlapping draghandles
+- [x] Fix: Resizing circle and ellipse
+- [x] Fix: Negative radius and overlapping draghandles
 - [ ] Shape: Polygon
-- [ ] View-mode: allow settings like show maps, show mouse changing to pointer etc.
+
+## Major
+
+- [ ] Split up into separate components:
+  - [ ] Image map creator/editor
+  - [ ] Image map viewer
+  - [ ] Draggable (drag items to map areas)
+
+### Creator
+
+- [ ] Add content to maps
+
+### Viewer
+
+- [ ] Show content on map click
+- [ ] Implement settings/options:
+
+  - [ ] Show maps yes/no
+  - [ ] Cursor change on map hover
+
+### Draggable
+
+Tbd
