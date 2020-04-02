@@ -6,7 +6,7 @@
       v-if="active"
     ></rect>
     <circle
-      v-bind="handle.attributes"
+      v-bind="handle.relativeAttributes"
       class="imagemap-resize-handle"
       @mousedown.self.stop="setActive"
     ></circle>
@@ -19,7 +19,8 @@ export default {
     handle: {
       type: Object,
       required: true
-    }
+    },
+    imageSize: { type: Object, required: true }
   },
   data() {
     return {
@@ -42,17 +43,23 @@ export default {
     handleResize(event) {
       if (event.buttons !== 1) return;
 
-      this.$emit("resize:map", this.handle.mousemovehandler(event));
+      // Convert the event's movementX and movementY to relative values (in relation to the total image size)
+      const relativeEvent = {
+        movementX: (event.movementX / this.imageSize.width) * 100,
+        movementY: (event.movementY / this.imageSize.height) * 100
+      };
+
+      this.$emit("resize:map", this.handle.mousemovehandler(relativeEvent));
     }
   },
   computed: {
     helperAttributes() {
-      const size = 100;
+      const size = 10;
       return {
-        x: this.handle.attributes.cx - size / 2,
-        y: this.handle.attributes.cy - size / 2,
-        width: size,
-        height: size
+        x: this.handle.attributes.cx - size / 2 + "%",
+        y: this.handle.attributes.cy - size / 2 + "%",
+        width: size + "%",
+        height: size + "%"
       };
     }
   }

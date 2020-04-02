@@ -33,7 +33,7 @@ These have to be completed before anything else
 - [x] Event: Create
 - [x] Fix: scaling circle and ellipse
 - [x] Implement in and exporting (via v-model?)
-- [ ] Implement scalability
+- [x] Implement scalability
 - [ ] Allow metadata per map (like content)
 
 ## Major

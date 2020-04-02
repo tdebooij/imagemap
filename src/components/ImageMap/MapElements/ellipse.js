@@ -1,11 +1,10 @@
 import Element from "./element.js";
 import Draghandle from "./draghandle.js";
 
-const r = 20;
-
 export default class Ellipse extends Element {
-  constructor(event) {
-    super("ellipse");
+  constructor(event, imageWidth, imageHeight) {
+    super("ellipse", imageWidth, imageHeight);
+    const r = this.startWidth / 2;
     const position = Element.getRelativeMousePosition(event);
     this.attributes = {
       cx: position.x + r,

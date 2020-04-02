@@ -2,14 +2,14 @@ import Element from "./element";
 import Draghandle from "./draghandle.js";
 
 export default class Rectangle extends Element {
-  constructor(event) {
-    super("rect");
+  constructor(event, imageWidth, imageHeight) {
+    super("rect", imageWidth, imageHeight);
     const position = Element.getRelativeMousePosition(event);
     this.attributes = {
       x: position.x,
       y: position.y,
-      width: 40,
-      height: 40
+      width: this.startWidth,
+      height: this.startWidth
     };
   }
 

@@ -1,8 +1,9 @@
 <template>
-  <div class="image-map" ref="imagemap" @resize="emitUpdate">
+  <div class="image-map">
     <img
       src="https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1934&q=80"
       alt="Image to map"
+      ref="imagemap"
     />
     <svg
       class="imagemap-svg-overlay"
@@ -12,6 +13,7 @@
         v-for="(map, index) in maps"
         :key="index"
         :map.sync="map"
+        :imageSize="imageSize"
         @selected="setSelected(map, index)"
       ></element-component>
     </svg>
@@ -26,25 +28,27 @@ import ContextMenu from "./ContextMenu.vue";
 export default {
   name: "ImageMap",
   props: {
-    value: { type: Object }
+    value: { type: Array }
   },
   data() {
     return {
-      maps: []
+      maps: [],
+      imageSize: {
+        width: undefined,
+        height: undefined
+      }
     };
   },
-  created() {
-    // If there is data in the value prop, set it to the maps prop
-    if (this.value) {
-      // First, check the sizes of the map vs the imagemap size
-      // TODO: Do that what I typed above.
-
-      // Assign it
-      this.maps = this.value.maps;
-    }
+  mounted() {
+    // Add event listener for the window resize event
+    this.$refs.imagemap.onload = this.getImageSize;
+    window.addEventListener("resize", this.getImageSize);
 
     // Add event listener for the delete key
-    document.addEventListener("keyup", this.deleteKeyListener);
+    window.addEventListener("keyup", this.deleteKeyListener);
+
+    // If there is data in the value prop, set it to the maps prop
+    if (this.value) this.maps = this.value.maps;
   },
   methods: {
     addElement(shape, event) {
@@ -55,13 +59,17 @@ export default {
       let map;
       switch (shape) {
         case "rect":
-          map = new Rectangle(event);
+          map = new Rectangle(
+            event,
+            this.imageSize.width,
+            this.imageSize.height
+          );
           break;
         case "circle":
-          map = new Circle(event);
+          map = new Circle(event, this.imageSize.width, this.imageSize.height);
           break;
         case "ellipse":
-          map = new Ellipse(event);
+          map = new Ellipse(event, this.imageSize.width, this.imageSize.height);
           break;
         default:
           throw new Error(`Non-existing shape: "${shape}"`);
@@ -87,16 +95,12 @@ export default {
         1
       );
     },
+    getImageSize() {
+      this.imageSize.width = this.$refs.imagemap.width;
+      this.imageSize.height = this.$refs.imagemap.height;
+    },
     emitUpdate() {
-      const domElement = this.$refs.imagemap;
-      const mapData = {
-        size: {
-          width: domElement.clientWidth,
-          height: domElement.clientHeight
-        },
-        maps: this.maps
-      };
-      this.$emit("input", mapData);
+      this.$emit("input", this.maps);
     }
   },
   watch: {

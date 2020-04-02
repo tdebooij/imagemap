@@ -1,11 +1,10 @@
 import Element from "./element.js";
 import Draghandle from "./draghandle.js";
 
-const r = 20;
-
 export default class Circle extends Element {
   constructor(event) {
     super("circle");
+    const r = this.startWidth / 2; // Because it is radius we divide it by 2
     const position = Element.getRelativeMousePosition(event);
     this.attributes = {
       cx: position.x + r,

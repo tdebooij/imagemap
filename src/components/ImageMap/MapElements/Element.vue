@@ -2,7 +2,7 @@
   <g @contextmenu.stop.prevent>
     <component
       :is="map.element"
-      v-bind="map.attributes"
+      v-bind="map.relativeAttributes"
       :class="{ 'is-active': map.isActive }"
       class="map-element"
       @mousedown.self.stop="$emit('selected')"
@@ -13,6 +13,7 @@
       :key="handle.position"
       :handle="handle"
       :mapIsActive="map.isActive"
+      :imageSize="imageSize"
       @resize:map="updateSize"
     />
   </g>
@@ -24,7 +25,8 @@ import DragHandle from "./Draghandle.vue";
 export default {
   name: "MapElement",
   props: {
-    map: { type: Object, required: true }
+    map: { type: Object, required: true },
+    imageSize: { type: Object, required: true }
   },
   methods: {
     updateSize(adjustments) {
@@ -34,10 +36,10 @@ export default {
       }
 
       // Check for negative width and/or height values
-      if (this.map.width < 0) {
+      if (this.map.attributes.width < 0) {
         this.map.attributes.width = 0;
       }
-      if (this.map.height < 0) {
+      if (this.map.attributes.height < 0) {
         this.map.attributes.height = 0;
       }
 
@@ -45,10 +47,17 @@ export default {
     },
     updatePosition(event) {
       if (event.buttons !== 1) return;
-      if (this.map.attributes.x) this.map.attributes.x += event.movementX;
-      if (this.map.attributes.y) this.map.attributes.y += event.movementY;
-      if (this.map.attributes.cx) this.map.attributes.cx += event.movementX;
-      if (this.map.attributes.cy) this.map.attributes.cy += event.movementY;
+      if (this.map.attributes.x)
+        this.map.attributes.x += (event.movementX / this.imageSize.width) * 100;
+      if (this.map.attributes.y)
+        this.map.attributes.y +=
+          (event.movementY / this.imageSize.height) * 100;
+      if (this.map.attributes.cx)
+        this.map.attributes.cx +=
+          (event.movementX / this.imageSize.width) * 100;
+      if (this.map.attributes.cy)
+        this.map.attributes.cy +=
+          (event.movementY / this.imageSize.height) * 100;
       this.$emit("update:map", this.map);
     }
   },
