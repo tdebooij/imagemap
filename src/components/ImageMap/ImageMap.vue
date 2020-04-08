@@ -1,14 +1,7 @@
 <template>
   <div class="image-map">
-    <img
-      src="https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1934&q=80"
-      alt="Image to map"
-      ref="imagemap"
-    />
-    <svg
-      class="imagemap-svg-overlay"
-      @contextmenu.prevent="$refs.contextmenu.open"
-    >
+    <img src="@/assets/groenteboer.jpg" alt="Image to map" ref="image" />
+    <svg class="imagemap-svg-overlay">
       <element-component
         v-for="(map, index) in maps"
         :key="index"
@@ -17,66 +10,36 @@
         @selected="setSelected(map, index)"
       ></element-component>
     </svg>
-    <context-menu ref="contextmenu" @addElement="addElement" />
   </div>
 </template>
 
 <script>
-import { Rectangle, Circle, Ellipse, ElementComponent } from "./MapElements";
-import ContextMenu from "./ContextMenu.vue";
+import { ElementComponent } from "./MapElements";
 
 export default {
   name: "ImageMap",
   props: {
-    value: { type: Array }
+    value: { type: Array },
+    settings: {
+      showMarkers: { type: Boolean, default: false },
+      showMaps: { type: Boolean, default: false },
+    },
+    imageSize: { type: Object },
   },
   data() {
     return {
       maps: [],
-      imageSize: {
-        width: undefined,
-        height: undefined
-      }
     };
   },
   mounted() {
-    // Add event listener for the window resize event
-    this.$refs.imagemap.onload = this.getImageSize;
-    window.addEventListener("resize", this.getImageSize);
-
-    // Add event listener for the delete key
-    window.addEventListener("keyup", this.deleteKeyListener);
+    // Emit an event when the image completes loading
+    console.log("loaded");
+    this.$refs.image.onload = this.$emit("imgLoaded");
 
     // If there is data in the value prop, set it to the maps prop
     if (this.value) this.maps = this.value.maps;
   },
   methods: {
-    addElement(shape, event) {
-      // Deselect the currently selected maps
-      this.deselectAllMaps();
-
-      // Create a new element, add it to our maps array and save the new length
-      let map;
-      switch (shape) {
-        case "rect":
-          map = new Rectangle(
-            event,
-            this.imageSize.width,
-            this.imageSize.height
-          );
-          break;
-        case "circle":
-          map = new Circle(event, this.imageSize.width, this.imageSize.height);
-          break;
-        case "ellipse":
-          map = new Ellipse(event, this.imageSize.width, this.imageSize.height);
-          break;
-        default:
-          throw new Error(`Non-existing shape: "${shape}"`);
-      }
-
-      this.maps.push(map);
-    },
     setSelected(map, index) {
       this.deselectAllMaps();
       // Set the given map to active
@@ -86,12 +49,12 @@ export default {
     },
     deselectAllMaps() {
       // Set all maps to inactive
-      this.maps.forEach(map => (map.isActive = false));
+      this.maps.forEach((map) => (map.isActive = false));
     },
     deleteKeyListener(event) {
       if (event.key !== "Delete") return;
       this.maps.splice(
-        this.maps.findIndex(e => e.isActive),
+        this.maps.findIndex((e) => e.isActive),
         1
       );
     },
@@ -101,7 +64,7 @@ export default {
     },
     emitUpdate() {
       this.$emit("input", this.maps);
-    }
+    },
   },
   watch: {
     // Set up a watcher to emit values to the parent
@@ -109,10 +72,16 @@ export default {
       handler: function() {
         this.emitUpdate();
       },
-      deep: true
-    }
+      deep: true,
+    },
+    value: {
+      handler: function(newVal) {
+        this.maps = newVal;
+      },
+      deep: true,
+    },
   },
-  components: { ElementComponent, ContextMenu }
+  components: { ElementComponent },
 };
 </script>
 

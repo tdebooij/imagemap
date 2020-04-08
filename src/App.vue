@@ -1,27 +1,41 @@
 <template>
-  <div id="app">
-    <div class="col-50">
-      <image-map v-model="maps" />
-    </div>
-    <div class="col-50">
-      {{ maps }}
-    </div>
+  <div id="app-container">
+    <!-- Quick and dirty view switcher -->
+    <ul class="view-switcher">
+      <li
+        v-for="view in allViews"
+        :key="view.name"
+        class="view-link"
+        :class="view.component == currentView ? 'active' : ''"
+        @click="currentView = view.component"
+      >
+        {{ view.name }}
+      </li>
+    </ul>
+    <component :is="currentView" />
   </div>
 </template>
 
 <script>
-import ImageMap from "./components/ImageMap/ImageMap";
+import ImageMapEdit from "./components/ImageMap/ImageMapEdit";
+import ImageMapView from "./components/ImageMap/ImageMapView";
+import DraggableImageMapEdit from "./components/ImageMap/DraggableImageMapEdit";
+import DraggableImageMapView from "./components/ImageMap/DraggableImageMapView";
 
 export default {
   name: "App",
   data() {
     return {
-      maps: undefined
+      allViews: [
+        { component: ImageMapEdit, name: "Basic ImgMap Edit" },
+        { component: ImageMapView, name: "Basic ImgMap View" },
+        { component: DraggableImageMapEdit, name: "TextArea ImgMap Edit" },
+        { component: DraggableImageMapView, name: "TextArea ImgMap View" },
+      ],
+      currentView: ImageMapEdit,
+      mapModel: undefined,
     };
   },
-  components: {
-    ImageMap
-  }
 };
 </script>
 
@@ -41,5 +55,29 @@ export default {
 .col-50 {
   width: 50%;
   padding: 0 1rem;
+}
+
+.view-switcher {
+  display: flex;
+  justify-content: center;
+}
+
+.view-switcher .view-link {
+  list-style-type: none;
+  margin: 0 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-bottom: 0;
+  color: black;
+  transition: all 0.1s linear;
+}
+
+.view-switcher .view-link:hover,
+.view-switcher .view-link.active {
+  border-bottom: 2px solid cornflowerblue;
+  color: cornflowerblue;
+}
+.view-switcher .view-link.active {
+  cursor: auto;
 }
 </style>
