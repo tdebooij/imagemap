@@ -55,7 +55,6 @@ These have to be completed before anything else
 
 - [ ] Show content on map click
 - [ ] Implement settings/options:
-
   - [ ] Show maps yes/no
   - [ ] Cursor change on map hover
 
