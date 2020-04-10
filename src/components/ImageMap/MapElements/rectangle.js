@@ -2,14 +2,14 @@ import Element from "./element";
 import Draghandle from "./draghandle.js";
 
 export default class Rectangle extends Element {
-  constructor(event, imageWidth, imageHeight) {
-    super("rect", imageWidth, imageHeight);
+  constructor(event) {
+    super("rect");
     const position = Element.getRelativeMousePosition(event);
     this.attributes = {
       x: position.x,
       y: position.y,
       width: this.startWidth,
-      height: this.startWidth
+      height: this.startWidth,
     };
   }
 
@@ -17,23 +17,23 @@ export default class Rectangle extends Element {
   get dragHandles() {
     return [
       // Top left
-      new Draghandle(this.attributes.x, this.attributes.y, event => {
+      new Draghandle(this.attributes.x, this.attributes.y, (event) => {
         return {
           x: event.movementX,
           y: event.movementY,
           width: -1 * event.movementX,
-          height: -1 * event.movementY
+          height: -1 * event.movementY,
         };
       }),
       // Top right
       new Draghandle(
         this.attributes.x + this.attributes.width,
         this.attributes.y,
-        event => {
+        (event) => {
           return {
             y: event.movementY,
             width: event.movementX,
-            height: -1 * event.movementY
+            height: -1 * event.movementY,
           };
         }
       ),
@@ -41,10 +41,10 @@ export default class Rectangle extends Element {
       new Draghandle(
         this.attributes.x + this.attributes.width,
         this.attributes.y + this.attributes.height,
-        event => {
+        (event) => {
           return {
             width: event.movementX,
-            height: event.movementY
+            height: event.movementY,
           };
         }
       ),
@@ -52,14 +52,14 @@ export default class Rectangle extends Element {
       new Draghandle(
         this.attributes.x,
         this.attributes.y + this.attributes.height,
-        event => {
+        (event) => {
           return {
             x: event.movementX,
             width: -1 * event.movementX,
-            height: event.movementY
+            height: event.movementY,
           };
         }
-      )
+      ),
     ];
   }
 }

@@ -10,6 +10,7 @@
     />
     <drag-handle
       v-for="handle in map.dragHandles"
+      v-show="resizable"
       :key="handle.position"
       :handle="handle"
       :mapIsActive="map.isActive"
@@ -20,13 +21,15 @@
 </template>
 
 <script>
+/* eslint-disable vue/no-use-v-if-with-v-for */
 import DragHandle from "./Draghandle.vue";
 
 export default {
   name: "MapElement",
   props: {
     map: { type: Object, required: true },
-    imageSize: { type: Object, required: true }
+    imageSize: { type: Object },
+    resizable: { type: Boolean, default: false },
   },
   methods: {
     updateSize(adjustments) {
@@ -55,22 +58,25 @@ export default {
       this.$emit("update:map", this.map);
     },
     updatePosition(event) {
-      if (event.buttons !== 1) return;
-      if (this.map.attributes.x)
-        this.map.attributes.x += (event.movementX / this.imageSize.width) * 100;
-      if (this.map.attributes.y)
-        this.map.attributes.y +=
-          (event.movementY / this.imageSize.height) * 100;
-      if (this.map.attributes.cx)
-        this.map.attributes.cx +=
-          (event.movementX / this.imageSize.width) * 100;
-      if (this.map.attributes.cy)
-        this.map.attributes.cy +=
-          (event.movementY / this.imageSize.height) * 100;
-      this.$emit("update:map", this.map);
-    }
+      if (this.resizable) {
+        if (event.buttons !== 1) return;
+        if (this.map.attributes.x)
+          this.map.attributes.x +=
+            (event.movementX / this.imageSize.width) * 100;
+        if (this.map.attributes.y)
+          this.map.attributes.y +=
+            (event.movementY / this.imageSize.height) * 100;
+        if (this.map.attributes.cx)
+          this.map.attributes.cx +=
+            (event.movementX / this.imageSize.width) * 100;
+        if (this.map.attributes.cy)
+          this.map.attributes.cy +=
+            (event.movementY / this.imageSize.height) * 100;
+        this.$emit("update:map", this.map);
+      }
+    },
   },
-  components: { DragHandle }
+  components: { DragHandle },
 };
 </script>
 

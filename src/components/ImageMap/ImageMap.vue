@@ -1,16 +1,22 @@
 <template>
-  <div class="image-map">
-    <img src="@/assets/groenteboer.jpg" alt="Image to map" ref="image" />
-    <svg class="imagemap-svg-overlay">
-      <element-component
-        v-for="(map, index) in maps"
-        :key="index"
-        :map.sync="map"
-        :imageSize="imageSize"
-        @selected="setSelected(map, index)"
-      ></element-component>
-    </svg>
-  </div>
+  <svg class="imagemap-svg-overlay" v-if="maps">
+    <element-component
+      v-for="(map, index) in maps.filter((e) => !e.isActive)"
+      :key="index"
+      :map.sync="map"
+      :imageSize="imageSize"
+      @selected="setSelected(map, index)"
+    ></element-component>
+    <!-- Render the active element last, so they will be on top when dragging/resizing -->
+    <element-component
+      v-for="(map, index) in maps.filter((e) => e.isActive)"
+      :key="index + '-' + map.isActive"
+      :map.sync="map"
+      :imageSize="imageSize"
+      :resizable="isResizable"
+      @selected="setSelected(map, index)"
+    ></element-component>
+  </svg>
 </template>
 
 <script>
@@ -20,10 +26,10 @@ export default {
   name: "ImageMap",
   props: {
     value: { type: Array },
-    settings: {
-      showMarkers: { type: Boolean, default: false },
-      showMaps: { type: Boolean, default: false },
-    },
+
+    isResizable: { type: Boolean, default: false },
+    showMaps: { type: Boolean, default: false },
+
     imageSize: { type: Object },
   },
   data() {
@@ -32,35 +38,18 @@ export default {
     };
   },
   mounted() {
-    // Emit an event when the image completes loading
-    console.log("loaded");
-    this.$refs.image.onload = this.$emit("imgLoaded");
-
     // If there is data in the value prop, set it to the maps prop
     if (this.value) this.maps = this.value.maps;
   },
   methods: {
-    setSelected(map, index) {
+    setSelected(map) {
       this.deselectAllMaps();
       // Set the given map to active
       map.isActive = true;
-      // Move the active map to the end of the array, so it is painted last and therefore on top
-      this.maps.push(this.maps.splice(index, 1)[0]);
     },
     deselectAllMaps() {
       // Set all maps to inactive
       this.maps.forEach((map) => (map.isActive = false));
-    },
-    deleteKeyListener(event) {
-      if (event.key !== "Delete") return;
-      this.maps.splice(
-        this.maps.findIndex((e) => e.isActive),
-        1
-      );
-    },
-    getImageSize() {
-      this.imageSize.width = this.$refs.imagemap.width;
-      this.imageSize.height = this.$refs.imagemap.height;
     },
     emitUpdate() {
       this.$emit("input", this.maps);

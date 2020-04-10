@@ -12,7 +12,7 @@
         {{ view.name }}
       </li>
     </ul>
-    <component :is="currentView" />
+    <component :is="currentView" :value="savedMapModel" @save="setMap" />
   </div>
 </template>
 
@@ -33,8 +33,13 @@ export default {
         { component: DraggableImageMapView, name: "TextArea ImgMap View" },
       ],
       currentView: ImageMapEdit,
-      mapModel: undefined,
+      savedMapModel: undefined,
     };
+  },
+  methods: {
+    setMap(map) {
+      this.savedMapModel = map;
+    },
   },
 };
 </script>

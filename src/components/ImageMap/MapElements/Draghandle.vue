@@ -18,13 +18,13 @@ export default {
   props: {
     handle: {
       type: Object,
-      required: true
+      required: true,
     },
-    imageSize: { type: Object, required: true }
+    imageSize: { type: Object },
   },
   data() {
     return {
-      active: false
+      active: false,
     };
   },
   methods: {
@@ -33,11 +33,11 @@ export default {
       // Set the active state to true
       this.active = true;
       // Set an event listener (on the entire body) to check for mouseUp event, if so, disable the active state on the draghandle
-      window.addEventListener("mouseup", test);
+      window.addEventListener("mouseup", disableHelperArea);
       const _this = this;
-      function test() {
+      function disableHelperArea() {
         _this.active = false;
-        window.removeEventListener("mouseup", test);
+        window.removeEventListener("mouseup", disableHelperArea);
       }
     },
     handleResize(event) {
@@ -46,11 +46,11 @@ export default {
       // Convert the event's movementX and movementY to relative values (in relation to the total image size)
       const relativeEvent = {
         movementX: (event.movementX / this.imageSize.width) * 100,
-        movementY: (event.movementY / this.imageSize.height) * 100
+        movementY: (event.movementY / this.imageSize.height) * 100,
       };
 
       this.$emit("resize:map", this.handle.mousemovehandler(relativeEvent));
-    }
+    },
   },
   computed: {
     helperAttributes() {
@@ -59,10 +59,10 @@ export default {
         x: this.handle.attributes.cx - size / 2 + "%",
         y: this.handle.attributes.cy - size / 2 + "%",
         width: size + "%",
-        height: size + "%"
+        height: size + "%",
       };
-    }
-  }
+    },
+  },
 };
 </script>
 

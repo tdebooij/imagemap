@@ -3,10 +3,8 @@ const startWidth = 10; // In percentage of the image
 
 export default class element {
   // The base constructor
-  constructor(element, imageWidth, imageHeight) {
+  constructor(element) {
     this.element = element;
-    this.imageWidth = imageWidth;
-    this.imageHeight = imageHeight;
     // Set a newly created map to active by default
     this.isActive = true;
 
@@ -20,7 +18,7 @@ export default class element {
 
   get relativeAttributes() {
     let relativeAttributes = {};
-    Object.keys(this.attributes).forEach(key => {
+    Object.keys(this.attributes).forEach((key) => {
       relativeAttributes[key] = this.attributes[key] + "%";
     });
 
@@ -34,13 +32,13 @@ export default class element {
     // Get the mouseposition in pixels relative only to the bounding image rect
     const coords = {
       x: e.clientX - rect.left,
-      y: e.clientY - rect.top
+      y: e.clientY - rect.top,
     };
 
     // Return coords as percentage of the bounding rect
     return {
       x: (coords.x / rect.width) * 100,
-      y: (coords.y / rect.height) * 100
+      y: (coords.y / rect.height) * 100,
     };
   }
 }

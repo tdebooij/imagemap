@@ -43,17 +43,19 @@ These have to be completed before anything else
 ## Major
 
 - [ ] Split up into separate components:
-  - [ ] Image map creator/editor
-  - [ ] Image map viewer
+  - [x] Image map editor
+  - [x] Image map viewer
+  - [ ] Image map textarea editor
+  - [ ] Image map textarea viewer
   - [ ] Draggable (drag items to map areas)
 
 ### Creator
 
-- [ ] Add content to maps
+- [x] Add content to maps
 
 ### Viewer
 
-- [ ] Show content on map click
+- [x] Show content on map click
 - [ ] Implement settings/options:
   - [ ] Show maps yes/no
   - [ ] Cursor change on map hover
