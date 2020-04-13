@@ -32,7 +32,8 @@
         <button @click="saveImageMap" class="save-button">Save</button>
       </div>
       <div v-else>
-        Create a map first 😘
+        {{ maps }}
+        Create a map first 😘 textea
       </div>
     </div>
   </div>

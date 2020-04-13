@@ -19,8 +19,8 @@
 <script>
 import ImageMapEdit from "./components/ImageMap/ImageMapEdit";
 import ImageMapView from "./components/ImageMap/ImageMapView";
-import DraggableImageMapEdit from "./components/ImageMap/DraggableImageMapEdit";
-import DraggableImageMapView from "./components/ImageMap/DraggableImageMapView";
+import TextAreaMapEdit from "./components/ImageMap/TextAreaMapEdit";
+import TextAreaMapView from "./components/ImageMap/TextAreaMapView";
 
 export default {
   name: "App",
@@ -29,18 +29,18 @@ export default {
       allViews: [
         { component: ImageMapEdit, name: "Basic ImgMap Edit" },
         { component: ImageMapView, name: "Basic ImgMap View" },
-        { component: DraggableImageMapEdit, name: "TextArea ImgMap Edit" },
-        { component: DraggableImageMapView, name: "TextArea ImgMap View" },
+        { component: TextAreaMapEdit, name: "TextArea ImgMap Edit" },
+        { component: TextAreaMapView, name: "TextArea ImgMap View" }
       ],
       currentView: ImageMapEdit,
-      savedMapModel: undefined,
+      savedMapModel: undefined
     };
   },
   methods: {
     setMap(map) {
       this.savedMapModel = map;
-    },
-  },
+    }
+  }
 };
 </script>
 

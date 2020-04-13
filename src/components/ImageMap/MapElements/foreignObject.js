@@ -3,7 +3,7 @@ import Draghandle from "./draghandle.js";
 
 export default class Rectangle extends Element {
   constructor(event) {
-    super("rect");
+    super("foreignObject");
     const position = Element.getRelativeMousePosition(event);
     this.attributes = {
       x: position.x,

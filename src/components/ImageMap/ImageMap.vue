@@ -1,21 +1,29 @@
 <template>
   <svg class="imagemap-svg-overlay" v-if="maps">
     <element-component
-      v-for="(map, index) in maps.filter((e) => !e.isActive)"
+      v-for="(map, index) in maps.filter(e => !e.isActive)"
       :key="index"
       :map.sync="map"
       :imageSize="imageSize"
       @selected="setSelected(map, index)"
-    ></element-component>
+    >
+      <template v-if="$slots.foreignObject" v-slot:foreignObject>
+        <slot name="foreignObject"></slot>
+      </template>
+    </element-component>
     <!-- Render the active element last, so they will be on top when dragging/resizing -->
     <element-component
-      v-for="(map, index) in maps.filter((e) => e.isActive)"
+      v-for="(map, index) in maps.filter(e => e.isActive)"
       :key="index + '-' + map.isActive"
       :map.sync="map"
       :imageSize="imageSize"
       :resizable="isResizable"
       @selected="setSelected(map, index)"
-    ></element-component>
+    >
+      <template v-if="$slots.foreignObject" v-slot:foreignObject>
+        <slot name="foreignObject"></slot>
+      </template>
+    </element-component>
   </svg>
 </template>
 
@@ -30,11 +38,11 @@ export default {
     isResizable: { type: Boolean, default: false },
     showMaps: { type: Boolean, default: false },
 
-    imageSize: { type: Object },
+    imageSize: { type: Object }
   },
   data() {
     return {
-      maps: [],
+      maps: []
     };
   },
   mounted() {
@@ -49,11 +57,11 @@ export default {
     },
     deselectAllMaps() {
       // Set all maps to inactive
-      this.maps.forEach((map) => (map.isActive = false));
+      this.maps.forEach(map => (map.isActive = false));
     },
     emitUpdate() {
       this.$emit("input", this.maps);
-    },
+    }
   },
   watch: {
     // Set up a watcher to emit values to the parent
@@ -61,16 +69,16 @@ export default {
       handler: function() {
         this.emitUpdate();
       },
-      deep: true,
+      deep: true
     },
     value: {
       handler: function(newVal) {
         this.maps = newVal;
       },
-      deep: true,
-    },
+      deep: true
+    }
   },
-  components: { ElementComponent },
+  components: { ElementComponent }
 };
 </script>
 

@@ -3,11 +3,15 @@
     <component
       :is="map.element"
       v-bind="map.relativeAttributes"
-      :class="{ 'is-active': map.isActive }"
-      class="map-element"
+      :class="{
+        'is-active': map.isActive,
+        'map-element': map.element != 'foreignObject'
+      }"
       @mousedown.self.stop="$emit('selected')"
       @mousemove.self.stop="updatePosition"
-    />
+    >
+      <slot name="foreignObject"></slot>
+    </component>
     <drag-handle
       v-for="handle in map.dragHandles"
       v-show="resizable"
@@ -29,33 +33,35 @@ export default {
   props: {
     map: { type: Object, required: true },
     imageSize: { type: Object },
-    resizable: { type: Boolean, default: false },
+    resizable: { type: Boolean, default: false }
   },
   methods: {
     updateSize(adjustments) {
-      // Loop over each adjustment that needs to be made and apply it
-      for (const prop in adjustments) {
-        this.map.attributes[prop] += adjustments[prop];
-      }
+      if (this.resizable) {
+        // Loop over each adjustment that needs to be made and apply it
+        for (const prop in adjustments) {
+          this.map.attributes[prop] += adjustments[prop];
+        }
 
-      // Check for negative width and/or height values
-      if (this.map.attributes.width < 2) {
-        this.map.attributes.width = 2;
-      }
-      if (this.map.attributes.height < 2) {
-        this.map.attributes.height = 2;
-      }
-      if (this.map.attributes.r < 1) {
-        this.map.attributes.r = 1;
-      }
-      if (this.map.attributes.rx < 1) {
-        this.map.attributes.rx = 1;
-      }
-      if (this.map.attributes.ry < 1) {
-        this.map.attributes.ry = 1;
-      }
+        // Check for negative width and/or height values
+        if (this.map.attributes.width < 2) {
+          this.map.attributes.width = 2;
+        }
+        if (this.map.attributes.height < 2) {
+          this.map.attributes.height = 2;
+        }
+        if (this.map.attributes.r < 1) {
+          this.map.attributes.r = 1;
+        }
+        if (this.map.attributes.rx < 1) {
+          this.map.attributes.rx = 1;
+        }
+        if (this.map.attributes.ry < 1) {
+          this.map.attributes.ry = 1;
+        }
 
-      this.$emit("update:map", this.map);
+        this.$emit("update:map", this.map);
+      }
     },
     updatePosition(event) {
       if (this.resizable) {
@@ -74,9 +80,9 @@ export default {
             (event.movementY / this.imageSize.height) * 100;
         this.$emit("update:map", this.map);
       }
-    },
+    }
   },
-  components: { DragHandle },
+  components: { DragHandle }
 };
 </script>
 
