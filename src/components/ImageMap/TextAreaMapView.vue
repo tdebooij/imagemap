@@ -6,7 +6,7 @@
         <image-map v-model="maps" :showMaps="false" :isResizable="false">
           <template v-slot:foreignObject>
             <textarea
-              xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:xhtml="http://www.w3.org/1999/xhtml"
               class="img-map-textarea"
             ></textarea>
           </template>
@@ -48,7 +48,6 @@ export default {
         // Convert all 'rect' to 'foreignObject'
         const objects = this.value;
         objects.forEach(o => (o.element = "foreignObject"));
-        console.log(objects);
         this.maps = objects;
       });
     }

@@ -1,5 +1,9 @@
 <template>
-  <svg class="imagemap-svg-overlay" v-if="maps">
+  <svg
+    class="imagemap-svg-overlay"
+    v-if="maps"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  >
     <element-component
       v-for="(map, index) in maps.filter(e => !e.isActive)"
       :key="index"
