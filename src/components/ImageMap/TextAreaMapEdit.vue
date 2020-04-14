@@ -7,7 +7,7 @@
         @contextmenu.prevent="$refs.contextmenu.open"
         v-click-outside="deselectAllMaps"
       >
-        <img src="@/assets/groenteboer.jpg" alt="Image to map" ref="image" />
+        <img src="@/assets/duurzaamheid.png" alt="Image to map" ref="image" />
         <image-map
           v-model="maps"
           :showMaps="true"

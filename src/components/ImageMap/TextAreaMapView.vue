@@ -2,7 +2,7 @@
   <div id="app">
     <div class="col-50">
       <div class="image-map">
-        <img src="@/assets/groenteboer.jpg" alt="Image to map" ref="image" />
+        <img src="@/assets/duurzaamheid.png" alt="Image to map" ref="image" />
         <image-map v-model="maps" :showMaps="false" :isResizable="false">
           <template v-slot:foreignObject>
             <textarea

@@ -2,7 +2,7 @@
   <div id="app">
     <div class="col-50">
       <div class="image-map">
-        <img src="@/assets/groenteboer.jpg" alt="Image to map" ref="image" />
+        <img src="@/assets/duurzaamheid.png" alt="Image to map" ref="image" />
         <image-map v-model="maps" :showMaps="true" :isResizable="false" />
       </div>
     </div>
@@ -23,15 +23,15 @@ import ImageMap from "./ImageMap";
 export default {
   name: "ImageMapEdit",
   props: {
-    value: { type: Array },
+    value: { type: Array }
   },
   data() {
     return {
       maps: [],
       imageSize: {
         width: undefined,
-        height: undefined,
-      },
+        height: undefined
+      }
     };
   },
   // Just for display purposes, can be removed on final implementation:
@@ -47,17 +47,17 @@ export default {
       this.deselectAllMaps();
       // Set the given map to active
       map.isActive = true;
-    },
+    }
   },
   computed: {
     activeMap() {
-      const activeMap = this.maps.find((map) => map.isActive);
+      const activeMap = this.maps.find(map => map.isActive);
       return activeMap;
-    },
+    }
   },
   components: {
-    ImageMap,
-  },
+    ImageMap
+  }
 };
 </script>
 
